@@ -81,7 +81,7 @@ async function fetchIgnoredFiles() {
 }
 function generateDirectoryIndex(dirPath, relativePath = '') {
   const items = fs.readdirSync(dirPath);
-  
+  await fetchIgnoredFiles();
   // 检查是否已有 index.html
   if (items.includes('index.html') && dirPath !== '.') {
     return;
