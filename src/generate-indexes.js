@@ -63,7 +63,7 @@ async function fetchIgnoredFiles() {
         const response = await fetch(url);
 
         const text = await response.text();
-        const isIgnored = simpleGitignore(text);
+        const isIgnored = new simpleGitignore(text);
         return isIgnored;
 
         if (!response.ok) {
