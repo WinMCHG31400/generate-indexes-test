@@ -1,0 +1,6 @@
+{
+  "name": "test-site",
+  "scripts": {
+    "build": "node src/generate-indexes.js"
+  }
+}
