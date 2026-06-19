@@ -71,6 +71,7 @@ function generateDirectoryIndex(dirPath, relativePath = '') {
   }
 
   const displayPath = relativePath || '/';
+  const isRoot = dirPath === '.';
   let html = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
