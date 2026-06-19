@@ -2,7 +2,10 @@ const fs = require('fs');
 const path = require('path');
 let isIgnored = () => false; // 默认不忽略任何文件
 const CONFIG = {
-    IGNORED_FILES_FILE: 'generate.ignore', // 忽略文件列表的文件路径
+    IGNORED_FILES: `
+    README.md
+    src/
+    `, // 忽略文件列表的文件路径
 };
 
 function simpleGitignore(patterns) {
@@ -54,30 +57,6 @@ function simpleGitignore(patterns) {
 
     return false;
   };
-}
-async function fetchIgnoredFiles() {
-    try {
-        const url = CONFIG.IGNORED_FILES_FILE
-            ? `${CONFIG.IGNORED_FILES_FILE}?t=${Date.now()}`
-            : CONFIG.IGNORED_FILES_FILE;
-
-        const response = await fetch(url);
-        console.log('获取忽略文件列表:', url, response.status);
-        const text = await response.text();
-        console.log('忽略文件列表内容:', text);
-        isIgnored = new simpleGitignore(text);
-        return isIgnored;
-
-        if (!response.ok) {
-            throw new Error(`获取忽略文件列表失败 (HTTP ${response.status})`);
-        }
-
-        
-    } catch (error) {
-        console.error('加载忽略文件列表失败:', error);
-        showError('加载忽略文件列表失败: ' + error.message);
-        return [];
-    }
 }
 function generateDirectoryIndex(dirPath, relativePath = '') {
   const items = fs.readdirSync(dirPath);
@@ -282,7 +261,7 @@ function walkDirectory(dirPath, basePath = '') {
 }
 
 // 从当前目录开始
-fetchIgnoredFiles();
+isIgnored = new simpleGitignore(CONFIG.IGNORED_FILES);
 console.log(' 开始生成目录索引文件...');
 walkDirectory('.');
 console.log(' 索引文件生成完成！');
