@@ -172,7 +172,7 @@ function generateDirectoryIndex(dirPath, relativePath = '') {
   const files = [];
   
   for (const item of items) {
-    if (item === 'index.html' || isIgnored(item)) continue;
+    if (item === 'index.html' ||  item === '.git' || item === '.github' || item==='src' ||isIgnored(item)) continue;
     
     const itemPath = path.join(dirPath, item);
     const isDir = fs.statSync(itemPath).isDirectory();
