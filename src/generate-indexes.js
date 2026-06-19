@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 let isIgnored = () => false; // 默认不忽略任何文件
 const CONFIG = {
-    IGNORED_FILES: `
+  IGNORED_FILES: `
     README.md
     src/*
     .gitattributes
@@ -20,7 +20,7 @@ function simpleGitignore(patterns) {
   patterns.split('\n').forEach(line => {
     line = line.trim();
     if (!line || line.startsWith('#')) return;
-    
+
     if (line.startsWith('!')) {
       unignoreList.push(line.substring(1));
     } else {
@@ -28,7 +28,7 @@ function simpleGitignore(patterns) {
     }
   });
 
-  return function(filePath) {
+  return function (filePath) {
     // 简单匹配（处理常见场景）
     for (const unignore of unignoreList) {
       if (filePath.includes(unignore)) return false;
@@ -69,7 +69,7 @@ function generateDirectoryIndex(dirPath, relativePath = '') {
   if (items.includes('index.html') && dirPath !== '.') {
     return;
   }
-  
+
   const displayPath = relativePath || '/';
   let html = `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -160,45 +160,43 @@ function generateDirectoryIndex(dirPath, relativePath = '') {
         <div class="header">
             <h1>${escapeHtml(displayPath)}</h1>
         </div>
-        <div class="file-list">`;
-
-  
-  if(String(document.URL).lastIndexOf('/') > 0){ 
-    html += `<div class="file-item">
-                <div class="icon">📂</div>
-                <div class="name"><a href="../">../</a></div>
-                <div class="size">父目录</div>
-            </div>`;
-  }
+        <div class="file-list">
+            ${!isRoot ? `
+            <div class="file-item">
+            <div class="icon">📂</div>
+            <div class="name"><a href="../">../</a></div>
+            <div class="size">父目录</div>
+        </div>` : ''}`;
+              
   // 先列出目录，再列出文件
   const directories = [];
   const files = [];
-  
+
   for (const item of items) {
-    if (item === 'index.html' ||  item === '.git' || item === '.github' || item==='src' ||isIgnored(item)) continue;
-    
+    if (item === 'index.html' || item === '.git' || item === '.github' || item === 'src' || isIgnored(item)) continue;
+
     const itemPath = path.join(dirPath, item);
     const isDir = fs.statSync(itemPath).isDirectory();
     const itemDisplay = isDir ? `${item}/` : item;
-    
+
     if (isDir) {
       directories.push({ name: item, display: itemDisplay, isDir: true });
     } else {
       const stats = fs.statSync(itemPath);
-      files.push({ 
-        name: item, 
-        display: itemDisplay, 
+      files.push({
+        name: item,
+        display: itemDisplay,
         isDir: false,
         size: stats.size,
         sizeText: formatFileSize(stats.size)
       });
     }
   }
-  
+
   // 排序：目录在前，文件在后，各自按名称排序
   directories.sort((a, b) => a.name.localeCompare(b.name));
   files.sort((a, b) => a.name.localeCompare(b.name));
-  
+
   for (const dir of directories) {
     html += `
             <div class="file-item">
@@ -207,7 +205,7 @@ function generateDirectoryIndex(dirPath, relativePath = '') {
                 <div class="size">目录</div>
             </div>`;
   }
-  
+
   for (const file of files) {
     html += `
             <div class="file-item">
@@ -216,7 +214,7 @@ function generateDirectoryIndex(dirPath, relativePath = '') {
                 <div class="size">${file.sizeText}</div>
             </div>`;
   }
-  
+
   html += `
         </div>
         <div class="footer">
@@ -228,7 +226,7 @@ function generateDirectoryIndex(dirPath, relativePath = '') {
 </body>
 </html>
   `;
-  
+
   fs.writeFileSync(path.join(dirPath, 'index.html'), html);
 }
 
@@ -241,7 +239,7 @@ function formatFileSize(bytes) {
 }
 
 function escapeHtml(text) {
-  return text.replace(/[&<>]/g, function(m) {
+  return text.replace(/[&<>]/g, function (m) {
     if (m === '&') return '&amp;';
     if (m === '<') return '&lt;';
     if (m === '>') return '&gt;';
@@ -251,14 +249,14 @@ function escapeHtml(text) {
 
 function walkDirectory(dirPath, basePath = '') {
   const items = fs.readdirSync(dirPath);
-  
+
   // 为当前目录生成索引
   generateDirectoryIndex(dirPath, basePath);
-  
+
   // 递归处理子目录
   for (const item of items) {
     if (item === '.git' || item === '.github') continue;
-    
+
     const itemPath = path.join(dirPath, item);
     if (fs.statSync(itemPath).isDirectory()) {
       const newBasePath = basePath ? `${basePath}/${item}` : item;
