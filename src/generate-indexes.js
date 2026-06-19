@@ -170,7 +170,7 @@ function generateDirectoryIndex(dirPath, relativePath = '') {
   const files = [];
   
   for (const item of items) {
-    if (item === 'index.html' || item === '.git' || item === '.github') continue;
+    if (item === 'index.html' || isIgnored(item)) continue;
     
     const itemPath = path.join(dirPath, item);
     const isDir = fs.statSync(itemPath).isDirectory();
@@ -204,7 +204,6 @@ function generateDirectoryIndex(dirPath, relativePath = '') {
   }
   
   for (const file of files) {
-    if (isIgnored(file.name)) continue;
     html += `
             <div class="file-item">
                 <div class="icon">📄</div>
