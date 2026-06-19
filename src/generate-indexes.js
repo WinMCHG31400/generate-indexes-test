@@ -282,7 +282,7 @@ function walkDirectory(dirPath, basePath = '') {
 }
 
 // 从当前目录开始
-await fetchIgnoredFiles();
+fetchIgnoredFiles();
 console.log(' 开始生成目录索引文件...');
 walkDirectory('.');
 console.log(' 索引文件生成完成！');
