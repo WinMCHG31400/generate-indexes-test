@@ -4,7 +4,10 @@ let isIgnored = () => false; // 默认不忽略任何文件
 const CONFIG = {
     IGNORED_FILES: `
     README.md
-    src/
+    src/*
+    .gitattributes
+    .gitignore
+    .package.json
     `, // 忽略文件列表的文件路径
 };
 
