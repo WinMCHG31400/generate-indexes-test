@@ -7,7 +7,9 @@ const CONFIG = {
     src/*
     .gitattributes
     .gitignore
-    .package.json
+    package.json
+    package-lock.json
+    .git/*
     `, // 忽略文件列表的文件路径
 };
 
