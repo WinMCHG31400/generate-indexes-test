@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+let isIgnored = () => false; // 默认不忽略任何文件
 const CONFIG = {
     IGNORED_FILES_FILE: 'generate.ignore', // 忽略文件列表的文件路径
 };
@@ -63,7 +64,7 @@ async function fetchIgnoredFiles() {
         const response = await fetch(url);
 
         const text = await response.text();
-        const isIgnored = new simpleGitignore(text);
+        isIgnored = new simpleGitignore(text);
         return isIgnored;
 
         if (!response.ok) {
