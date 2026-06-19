@@ -169,6 +169,7 @@ function generateDirectoryIndex(dirPath, relativePath = '') {
                 <div class="name"><a href="../">../</a></div>
                 <div class="size">父目录</div>
             </div>`;
+  }
   // 先列出目录，再列出文件
   const directories = [];
   const files = [];
