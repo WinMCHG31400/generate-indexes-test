@@ -62,8 +62,9 @@ async function fetchIgnoredFiles() {
             : CONFIG.IGNORED_FILES_FILE;
 
         const response = await fetch(url);
-
+        console.log('获取忽略文件列表:', url, response.status);
         const text = await response.text();
+        console.log('忽略文件列表内容:', text);
         isIgnored = new simpleGitignore(text);
         return isIgnored;
 
