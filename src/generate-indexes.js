@@ -160,13 +160,15 @@ function generateDirectoryIndex(dirPath, relativePath = '') {
         <div class="header">
             <h1>${escapeHtml(displayPath)}</h1>
         </div>
-        <div class="file-list">
-            <div class="file-item">
+        <div class="file-list">`;
+
+  
+  if(String(document.URL).lastIndexOf('/') > 0){ 
+    html += `<div class="file-item">
                 <div class="icon">📂</div>
                 <div class="name"><a href="../">../</a></div>
                 <div class="size">父目录</div>
             </div>`;
-
   // 先列出目录，再列出文件
   const directories = [];
   const files = [];
