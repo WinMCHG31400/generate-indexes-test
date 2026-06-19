@@ -81,7 +81,6 @@ async function fetchIgnoredFiles() {
 }
 function generateDirectoryIndex(dirPath, relativePath = '') {
   const items = fs.readdirSync(dirPath);
-  await fetchIgnoredFiles();
   // 检查是否已有 index.html
   if (items.includes('index.html') && dirPath !== '.') {
     return;
@@ -283,6 +282,7 @@ function walkDirectory(dirPath, basePath = '') {
 }
 
 // 从当前目录开始
+await fetchIgnoredFiles();
 console.log(' 开始生成目录索引文件...');
 walkDirectory('.');
 console.log(' 索引文件生成完成！');
